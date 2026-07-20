@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,11 +8,10 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
-        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
     <style>
         /* ===== RESET & ROOT ===== */
         * {
@@ -21,7 +19,6 @@
             margin: 0;
             padding: 0;
         }
-
         :root {
             --bg: #0b0f14;
             --panel: #141b24;
@@ -37,8 +34,9 @@
             --text-dim: #8b93a1;
             --text-dimmer: #5b6472;
             --shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+            --yellow: #f0c040;
+            --blue: #4080f0;
         }
-
         body {
             background-color: var(--bg);
             background-image: linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
@@ -49,15 +47,12 @@
             min-height: 100vh;
             padding-bottom: 40px;
         }
-
         .mono {
             font-family: 'IBM Plex Mono', monospace;
         }
-
         .display {
             font-family: 'Space Grotesk', sans-serif;
         }
-
         a,
         button,
         input,
@@ -65,7 +60,6 @@
         textarea {
             font-family: inherit;
         }
-
         :focus-visible {
             outline: 2px solid var(--brass);
             outline-offset: 2px;
@@ -83,11 +77,9 @@
             z-index: 9999;
             padding: 20px;
         }
-
         #login-overlay.hidden {
             display: none;
         }
-
         .login-card {
             background: var(--panel);
             border: 1px solid var(--line);
@@ -98,18 +90,15 @@
             text-align: center;
             box-shadow: var(--shadow);
         }
-
         .login-card h2 {
             font-size: 24px;
             margin-bottom: 8px;
         }
-
         .login-card p {
             color: var(--text-dim);
             font-size: 14px;
             margin-bottom: 28px;
         }
-
         .login-card .brand-mark {
             width: 56px;
             height: 56px;
@@ -120,14 +109,12 @@
             justify-content: center;
             margin: 0 auto 16px;
         }
-
         .login-card .brand-mark span {
             transform: rotate(-45deg);
             color: var(--brass);
             font-weight: 700;
             font-size: 18px;
         }
-
         .google-btn {
             background: #fff;
             color: #1a1a1a;
@@ -144,17 +131,10 @@
             width: 100%;
             justify-content: center;
         }
-
         .google-btn:hover {
             transform: scale(1.02);
             box-shadow: 0 4px 16px rgba(255, 255, 255, 0.15);
         }
-
-        .google-btn img {
-            width: 22px;
-            height: 22px;
-        }
-
         .user-badge {
             display: flex;
             align-items: center;
@@ -165,23 +145,19 @@
             border: 1px solid var(--line);
             cursor: default;
         }
-
         .user-badge img {
             width: 32px;
             height: 32px;
             border-radius: 50%;
         }
-
         .user-badge .name {
             font-size: 13px;
             font-weight: 500;
         }
-
         .user-badge .email {
             font-size: 11px;
             color: var(--text-dim);
         }
-
         .logout-btn {
             background: transparent;
             border: 1px solid var(--red);
@@ -192,7 +168,6 @@
             cursor: pointer;
             transition: background 0.2s;
         }
-
         .logout-btn:hover {
             background: var(--red);
             color: #fff;
@@ -210,13 +185,11 @@
             max-width: 1400px;
             margin: 0 auto;
         }
-
         .brand {
             display: flex;
             align-items: center;
             gap: 12px;
         }
-
         .brand-mark-sm {
             width: 34px;
             height: 34px;
@@ -227,14 +200,12 @@
             justify-content: center;
             flex-shrink: 0;
         }
-
         .brand-mark-sm span {
             transform: rotate(-45deg);
             color: var(--brass);
             font-weight: 700;
             font-size: 13px;
         }
-
         .brand h1 {
             font-size: 18px;
             letter-spacing: 0.5px;
@@ -242,36 +213,30 @@
             margin: 0;
             font-weight: 600;
         }
-
         .brand p {
             margin: 2px 0 0;
             font-size: 11px;
             color: var(--text-dim);
         }
-
         .header-right {
             display: flex;
             align-items: center;
             gap: 16px;
             flex-wrap: wrap;
         }
-
         .clock {
             text-align: right;
         }
-
         .clock .time {
             font-size: 18px;
             letter-spacing: 1px;
             color: var(--brass);
         }
-
         .clock .date {
             font-size: 10px;
             color: var(--text-dim);
             letter-spacing: 0.5px;
         }
-
         .sync-dot {
             width: 8px;
             height: 8px;
@@ -279,23 +244,18 @@
             background: var(--green);
             flex-shrink: 0;
         }
-
         .sync-dot.warn {
             background: var(--brass);
             animation: pulse 1.2s infinite;
         }
-
         .sync-dot.err {
             background: var(--red);
         }
-
         @keyframes pulse {
-
             0%,
             100% {
                 opacity: 1;
             }
-
             50% {
                 opacity: 0.2;
             }
@@ -307,7 +267,6 @@
             margin: 20px auto;
             padding: 0 24px;
         }
-
         .transmission-inner {
             position: relative;
             overflow: hidden;
@@ -316,7 +275,6 @@
             border-radius: 8px;
             padding: 22px 28px;
         }
-
         .transmission-inner::before {
             content: '"';
             position: absolute;
@@ -328,7 +286,6 @@
             opacity: 0.04;
             line-height: 1;
         }
-
         .signal-label {
             font-size: 10px;
             letter-spacing: 1.5px;
@@ -341,7 +298,6 @@
             position: relative;
             z-index: 1;
         }
-
         .signal-label .dot {
             width: 6px;
             height: 6px;
@@ -349,7 +305,6 @@
             background: var(--brass);
             animation: pulse 2.4s infinite;
         }
-
         #quote-text {
             font-size: 18px;
             line-height: 1.55;
@@ -359,57 +314,26 @@
             z-index: 1;
             margin: 0;
         }
-
         .cursor {
             display: inline-block;
             color: var(--brass);
             animation: blink 1s step-end infinite;
         }
-
         @keyframes blink {
-
             0%,
             100% {
                 opacity: 1;
             }
-
             50% {
                 opacity: 0;
             }
         }
-
         #quote-author {
             margin-top: 8px;
             font-size: 13px;
             color: var(--text-dim);
             position: relative;
             z-index: 1;
-        }
-
-        .transmission-foot {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 14px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .shuffle-btn {
-            background: transparent;
-            border: 1px solid var(--brass-dim);
-            color: var(--brass);
-            font-size: 10px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            padding: 5px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: border-color 0.15s;
-        }
-
-        .shuffle-btn:hover {
-            border-color: var(--brass);
         }
 
         /* ===== GRID ===== */
@@ -421,12 +345,10 @@
             margin: 0 auto;
             padding: 0 24px 30px;
         }
-
         @media (min-width: 1024px) {
             .span-2 {
                 grid-column: span 2;
             }
-
             .span-3 {
                 grid-column: span 3;
             }
@@ -441,7 +363,6 @@
             position: relative;
             overflow: hidden;
         }
-
         .panel::before {
             content: '';
             position: absolute;
@@ -451,31 +372,24 @@
             height: 3px;
             background: var(--accent);
         }
-
         .panel--ops {
             --accent: var(--brass);
         }
-
         .panel--ldg {
             --accent: var(--green);
         }
-
         .panel--prayer {
             --accent: var(--copper);
         }
-
         .panel--health {
             --accent: var(--cyan);
         }
-
         .panel--focus {
             --accent: var(--red);
         }
-
         .panel--goal {
             --accent: var(--brass);
         }
-
         .panel--resource {
             --accent: var(--green);
         }
@@ -487,7 +401,6 @@
             margin-bottom: 14px;
             flex-wrap: wrap;
         }
-
         .callsign {
             font-size: 10px;
             font-weight: 600;
@@ -498,27 +411,23 @@
             padding: 2px 8px;
             border-radius: 4px;
         }
-
         .panel-title {
             font-size: 13px;
             letter-spacing: 0.4px;
             text-transform: uppercase;
             font-weight: 600;
         }
-
         .panel-status {
             margin-left: auto;
             font-size: 10px;
             color: var(--text-dim);
         }
-
         .panel .badge-icon {
             font-size: 18px;
             cursor: pointer;
             position: relative;
             display: inline-block;
         }
-
         .badge-icon .suggestion-box {
             display: none;
             position: absolute;
@@ -536,11 +445,9 @@
             z-index: 100;
             color: var(--text);
         }
-
         .badge-icon:hover .suggestion-box {
             display: block;
         }
-
         .badge-icon .suggestion-box::before {
             content: '';
             position: absolute;
@@ -566,24 +473,20 @@
             border-radius: 4px;
             font-size: 13px;
         }
-
         input:focus,
         select:focus,
         textarea:focus {
             outline: none;
             border-color: var(--accent);
         }
-
         input::placeholder,
         textarea::placeholder {
             color: var(--text-dimmer);
         }
-
         textarea {
             resize: vertical;
             min-height: 50px;
         }
-
         .btn {
             background: var(--accent);
             color: #11161d;
@@ -596,36 +499,35 @@
             transition: filter 0.15s;
             white-space: nowrap;
         }
-
         .btn:hover {
             filter: brightness(1.12);
         }
-
         .btn-sm {
             padding: 5px 10px;
             font-size: 11px;
         }
-
+        .btn-danger {
+            background: var(--red);
+            color: #fff;
+        }
         .form-row {
             display: flex;
             gap: 8px;
             margin-bottom: 12px;
+            flex-wrap: wrap;
         }
-
         .form-stack {
             display: flex;
             flex-direction: column;
             gap: 8px;
             margin-bottom: 12px;
         }
-
         .form-grid-3 {
             display: grid;
             grid-template-columns: 1fr 1fr auto;
             gap: 8px;
             margin-bottom: 12px;
         }
-
         @media (max-width: 480px) {
             .form-grid-3 {
                 grid-template-columns: 1fr;
@@ -642,7 +544,6 @@
             max-height: 200px;
             overflow-y: auto;
         }
-
         .row {
             display: flex;
             align-items: center;
@@ -654,17 +555,14 @@
             border-radius: 4px;
             font-size: 12px;
         }
-
         .row-text {
             cursor: pointer;
             color: var(--text);
         }
-
         .row-text.done {
             color: var(--text-dimmer);
             text-decoration: line-through;
         }
-
         .row-x {
             background: none;
             border: none;
@@ -673,11 +571,9 @@
             font-size: 12px;
             padding: 2px 4px;
         }
-
         .row-x:hover {
             color: var(--red);
         }
-
         .empty {
             font-size: 12px;
             color: var(--text-dimmer);
@@ -691,7 +587,6 @@
             gap: 8px;
             margin-bottom: 12px;
         }
-
         .stat-box {
             background: var(--panel-2);
             border: 1px solid var(--line);
@@ -699,23 +594,19 @@
             border-radius: 6px;
             text-align: center;
         }
-
         .stat-box .label {
             font-size: 10px;
             color: var(--text-dim);
             display: block;
             margin-bottom: 2px;
         }
-
         .stat-box .value {
             font-size: 14px;
             font-weight: 600;
         }
-
         .value.pos {
             color: var(--green);
         }
-
         .value.neg {
             color: var(--red);
         }
@@ -727,7 +618,6 @@
             gap: 6px;
             margin: 10px 0;
         }
-
         .prayer-item {
             background: var(--panel-2);
             border: 1px solid var(--line);
@@ -735,20 +625,17 @@
             padding: 6px 4px;
             text-align: center;
         }
-
         .prayer-item .p-name {
             font-size: 9px;
             text-transform: uppercase;
             color: var(--text-dim);
             letter-spacing: 0.5px;
         }
-
         .prayer-item .p-time {
             font-size: 13px;
             font-weight: 600;
             color: var(--brass);
         }
-
         .prayer-item.current {
             border-color: var(--brass);
             background: var(--panel);
@@ -758,33 +645,38 @@
         .field {
             margin-bottom: 12px;
         }
-
         .field-label {
             font-size: 10px;
             color: var(--text-dim);
             display: block;
             margin-bottom: 4px;
         }
-
         .lamp {
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            background: var(--line);
             flex-shrink: 0;
             transition: background 0.2s, box-shadow 0.2s;
         }
-
-        .lamp.on-good {
+        .lamp.green {
             background: var(--green);
             box-shadow: 0 0 8px var(--green);
         }
-
-        .lamp.on-bad {
+        .lamp.yellow {
+            background: var(--yellow);
+            box-shadow: 0 0 8px var(--yellow);
+        }
+        .lamp.blue {
+            background: var(--blue);
+            box-shadow: 0 0 8px var(--blue);
+        }
+        .lamp.red {
             background: var(--red);
             box-shadow: 0 0 8px var(--red);
         }
-
+        .lamp.off {
+            background: var(--line);
+        }
         .waste-feedback {
             display: flex;
             align-items: center;
@@ -804,19 +696,16 @@
             gap: 14px;
             margin-bottom: 14px;
         }
-
         .gauge-num {
             font-size: 13px;
             font-weight: 600;
         }
-
         .gauge-btns {
             display: flex;
             flex-direction: column;
             gap: 4px;
             margin-left: auto;
         }
-
         .gauge-btn {
             background: var(--panel-2);
             border: 1px solid var(--line);
@@ -828,46 +717,76 @@
             font-size: 13px;
             line-height: 1;
         }
-
         .gauge-btn:hover {
             border-color: var(--cyan);
             color: var(--cyan);
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 12px;
+        /* ===== RESOURCE FILE UPLOAD ===== */
+        .file-upload-wrapper {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
         }
-
-        thead th {
-            text-align: left;
-            font-size: 9px;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
-            color: var(--text-dim);
-            border-bottom: 1px solid var(--line);
-            padding: 0 0 6px;
-            font-weight: 500;
-        }
-
-        tbody td {
-            padding: 8px 0;
-            border-bottom: 1px solid var(--line);
-        }
-
-        tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        .resource-tag {
-            display: inline-block;
+        .file-upload-wrapper input[type="file"] {
+            flex: 1;
+            padding: 6px;
             background: var(--panel-2);
             border: 1px solid var(--line);
-            border-radius: 12px;
-            padding: 2px 10px;
+            border-radius: 4px;
+            color: var(--text);
+            font-size: 11px;
+        }
+        .file-upload-wrapper input[type="file"]::file-selector-button {
+            background: var(--accent);
+            color: #11161d;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 11px;
+        }
+        .resource-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+        }
+        .resource-item .file-type {
+            font-size: 16px;
+        }
+        .resource-item a {
+            color: var(--cyan);
+            text-decoration: none;
+        }
+        .resource-item a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== AI MODE TOGGLE ===== */
+        .mode-toggle {
+            display: flex;
+            gap: 6px;
+            align-items: center;
             font-size: 10px;
             color: var(--text-dim);
+        }
+        .mode-toggle .toggle-btn {
+            background: var(--panel-2);
+            border: 1px solid var(--line);
+            color: var(--text-dim);
+            padding: 2px 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 10px;
+            transition: all 0.2s;
+        }
+        .mode-toggle .toggle-btn.active {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--panel);
         }
 
         footer {
@@ -876,29 +795,37 @@
             padding: 0 24px;
             text-align: center;
         }
-
         footer p {
             font-size: 10px;
             color: var(--text-dimmer);
             letter-spacing: 0.4px;
         }
 
-        /* scrollbar */
         ::-webkit-scrollbar {
             width: 4px;
         }
-
         ::-webkit-scrollbar-track {
             background: var(--panel-2);
         }
-
         ::-webkit-scrollbar-thumb {
             background: var(--brass-dim);
             border-radius: 4px;
         }
+
+        .section-divider {
+            border-top: 1px solid var(--line);
+            margin: 8px 0 12px;
+            padding-top: 8px;
+        }
+        .section-label {
+            font-size: 9px;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
     </style>
 </head>
-
 <body>
 
     <!-- ===== LOGIN OVERLAY ===== -->
@@ -909,14 +836,10 @@
             <p>Sign in with Google to access your dashboard</p>
             <button class="google-btn" id="google-login-btn">
                 <svg viewBox="0 0 48 48" width="22" height="22">
-                    <path fill="#EA4335"
-                        d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
-                    <path fill="#4285F4"
-                        d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
-                    <path fill="#FBBC05"
-                        d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
-                    <path fill="#34A853"
-                        d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
                 </svg>
                 Continue with Google
             </button>
@@ -945,32 +868,57 @@
     <!-- ===== TRANSMISSION ===== -->
     <section class="transmission">
         <div class="transmission-inner">
-            <div class="signal-label mono"><span class="dot"></span> <span id="signal-tag">INCOMING TRANSMISSION · DAY
-                    —/365</span></div>
-            <p id="quote-text">Tuning receiver<span class="cursor">▍</span></p>
+            <div class="signal-label mono"><span class="dot"></span> <span id="signal-tag">STUDY MOTIVATION</span></div>
+            <p id="quote-text">Loading motivation...<span class="cursor">▍</span></p>
             <p id="quote-author" class="mono"></p>
-            <div class="transmission-foot">
-                <span class="mono" style="font-size:10px;color:var(--text-dimmer);" id="quote-year"></span>
-                <button class="shuffle-btn mono" id="shuffle-btn">New signal</button>
-            </div>
         </div>
     </section>
 
     <!-- ===== MAIN GRID ===== -->
     <main class="grid">
 
-        <!-- ===== TASKS ===== -->
-        <section class="panel panel--ops">
+        <!-- ===== TASKS & GOALS (Combined) ===== -->
+        <section class="panel panel--ops span-2">
             <div class="panel-head">
                 <span class="callsign mono">OPS</span>
                 <span class="panel-title display">Tasks &amp; Goals</span>
                 <span class="panel-status mono" id="task-count">0 active</span>
             </div>
+
+            <!-- TASKS SECTION -->
+            <div class="section-label">📋 Tasks</div>
             <form id="task-form" class="form-row">
                 <input type="text" id="task-input" placeholder="What are you moving forward today?" required>
-                <button type="submit" class="btn">Log</button>
+                <button type="submit" class="btn">Add Task</button>
             </form>
             <ul class="list" id="task-list"></ul>
+
+            <div class="section-divider"></div>
+
+            <!-- GOALS SECTION -->
+            <div class="section-label">🎯 Goals</div>
+            <form id="goal-form" class="form-row">
+                <input type="text" id="goal-input" placeholder="What's your target? (e.g. Learn Python)" required style="flex:2;">
+                <input type="text" id="goal-deadline" placeholder="Deadline" style="max-width:120px;">
+                <button type="submit" class="btn">Set Goal</button>
+            </form>
+            <ul class="list" id="goal-list" style="max-height:150px;"></ul>
+
+            <!-- Goal AI Suggestions -->
+            <div style="margin-top:8px;padding:10px 12px;background:var(--panel-2);border-radius:6px;border-left:2px solid var(--brass);">
+                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+                    <div style="font-size:10px;color:var(--text-dim);letter-spacing:0.5px;text-transform:uppercase;">🤖 AI Goal Assistant</div>
+                    <div class="mode-toggle">
+                        <span>Mode:</span>
+                        <button class="toggle-btn active" id="goal-mode-brief" data-mode="brief">Brief</button>
+                        <button class="toggle-btn" id="goal-mode-detailed" data-mode="detailed">Detailed</button>
+                        <button class="toggle-btn" id="goal-toggle-off">Off</button>
+                    </div>
+                </div>
+                <div id="goal-suggestion" style="font-size:13px;line-height:1.6;color:var(--text);margin-top:6px;">
+                    Set a goal above to receive personalized guidance.
+                </div>
+            </div>
         </section>
 
         <!-- ===== FINANCE ===== -->
@@ -1011,13 +959,26 @@
                 <span class="panel-title display">Prayer Times</span>
                 <span class="panel-status mono" id="prayer-location">Dhaka, BD</span>
             </div>
+            <div class="field">
+                <label class="field-label">Select City</label>
+                <select id="city-select">
+                    <option value="dhaka">Dhaka</option>
+                    <option value="chittagong">Chittagong</option>
+                    <option value="sylhet">Sylhet</option>
+                    <option value="rajshahi">Rajshahi</option>
+                    <option value="khulna">Khulna</option>
+                    <option value="barishal">Barishal</option>
+                    <option value="rangpur">Rangpur</option>
+                    <option value="mymensingh">Mymensingh</option>
+                </select>
+            </div>
             <div class="prayer-grid" id="prayer-grid"></div>
             <div style="font-size:10px;color:var(--text-dimmer);text-align:center;margin-top:6px;">
                 Next: <span id="next-prayer" class="mono" style="color:var(--brass);">--</span>
             </div>
         </section>
 
-        <!-- ===== HEALTH (Mental + Physical) ===== -->
+        <!-- ===== HEALTH & WELLNESS ===== -->
         <section class="panel panel--health">
             <div class="panel-head">
                 <span class="callsign mono">VIT</span>
@@ -1025,10 +986,18 @@
                 <span class="badge-icon" style="margin-left:auto;">
                     💡
                     <span class="suggestion-box" id="health-suggestion-box">
-                        Log your data above to get personalized suggestions.
+                        Log your data to get personalized Islamic wellness tips.
                     </span>
                 </span>
             </div>
+
+            <!-- AI Mode Toggle for Health -->
+            <div class="mode-toggle" style="margin-bottom:10px;">
+                <span>AI Mode:</span>
+                <button class="toggle-btn active" id="health-mode-brief" data-mode="brief">Brief</button>
+                <button class="toggle-btn" id="health-mode-detailed" data-mode="detailed">Detailed</button>
+            </div>
+
             <div class="field">
                 <label class="field-label">Sleep (hours)</label>
                 <input type="number" id="sleep-input" min="0" max="24" step="0.5" placeholder="e.g. 7.5">
@@ -1061,61 +1030,53 @@
                 <span class="badge-icon" style="margin-left:auto;">
                     💡
                     <span class="suggestion-box" id="focus-suggestion-box">
-                        Log distraction hours to get feedback.
+                        Log your screen time for personalized advice.
                     </span>
                 </span>
             </div>
             <div class="field">
-                <label class="field-label">Hours lost to distraction today</label>
-                <input type="number" id="time-wasted" min="0" step="0.5" placeholder="e.g. 1.5">
+                <label class="field-label">Screen time today (hours)</label>
+                <input type="number" id="screen-time" min="0" step="0.5" placeholder="e.g. 4.5">
             </div>
             <div class="field">
-                <label class="field-label">What distracted you?</label>
-                <input type="text" id="distraction-source" placeholder="e.g. Social media, phone, etc.">
+                <label class="field-label">Current Mood</label>
+                <select id="mood-selector">
+                    <option value="happy">😊 Happy</option>
+                    <option value="sad">😢 Sad</option>
+                    <option value="angry">😡 Angry</option>
+                    <option value="neutral">😐 Neutral</option>
+                </select>
             </div>
-            <div class="waste-feedback" id="waste-feedback">
-                <span class="lamp" id="waste-lamp"></span>
-                <span id="waste-text">Log today's number to get feedback.</span>
-            </div>
-        </section>
-
-        <!-- ===== GOAL PLANNER (AI Agent) ===== -->
-        <section class="panel panel--goal span-2">
-            <div class="panel-head">
-                <span class="callsign mono">GOAL</span>
-                <span class="panel-title display">Goal Planner · AI Agent</span>
-                <span class="panel-status mono" id="goal-count">0 goals</span>
-            </div>
-            <form id="goal-form" class="form-row">
-                <input type="text" id="goal-input" placeholder="What's your target? (e.g. Learn Python)" required>
-                <input type="text" id="goal-deadline" placeholder="Deadline (e.g. 2 months)" style="max-width:140px;">
-                <button type="submit" class="btn">Set Goal</button>
-            </form>
-            <ul class="list" id="goal-list" style="max-height:180px;"></ul>
-            <div
-                style="margin-top:8px;padding:10px 12px;background:var(--panel-2);border-radius:6px;border-left:2px solid var(--brass);">
-                <div style="font-size:10px;color:var(--text-dim);letter-spacing:0.5px;text-transform:uppercase;">AI
-                    Suggestion</div>
-                <div id="goal-suggestion" style="font-size:13px;line-height:1.5;color:var(--text);">
-                    Set a goal above to receive a personalized action plan.
-                </div>
+            <div class="waste-feedback" id="focus-feedback">
+                <span class="lamp off" id="focus-lamp"></span>
+                <span id="focus-text">Log your screen time and mood for personalized advice.</span>
             </div>
         </section>
 
         <!-- ===== RESOURCES ===== -->
-        <section class="panel panel--resource span-2">
+        <section class="panel panel--resource span-3">
             <div class="panel-head">
                 <span class="callsign mono">RES</span>
                 <span class="panel-title display">Study Resources</span>
-                <span class="panel-status mono" id="resource-count">0 topics</span>
+                <span class="panel-status mono" id="resource-count">0 items</span>
             </div>
-            <form id="resource-form" class="form-row">
-                <input type="text" id="resource-subject" placeholder="Subject (e.g. Math)" required>
-                <input type="text" id="resource-topic" placeholder="Topic (e.g. Algebra)" required>
-                <input type="url" id="resource-link" placeholder="Resource URL" style="flex:2;">
-                <button type="submit" class="btn">Add</button>
+            <form id="resource-form" class="form-stack">
+                <div class="form-row">
+                    <input type="text" id="resource-subject" placeholder="Subject (e.g. Math)" required style="flex:1;">
+                    <input type="text" id="resource-topic" placeholder="Topic (e.g. Algebra)" required style="flex:1;">
+                </div>
+                <div class="form-row">
+                    <input type="url" id="resource-link" placeholder="Resource URL (optional)" style="flex:2;">
+                    <div class="file-upload-wrapper" style="flex:1;">
+                        <input type="file" id="resource-file" multiple accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.gif,.mp4,.webm,.ppt,.pptx,.xls,.xlsx">
+                    </div>
+                </div>
+                <button type="submit" class="btn">Add Resource</button>
             </form>
-            <ul class="list" id="resource-list" style="max-height:180px;"></ul>
+            <ul class="list" id="resource-list" style="max-height:220px;"></ul>
+            <div style="margin-top:6px;font-size:9px;color:var(--text-dimmer);">
+                Supported: PDF, DOC, TXT, Images, Videos, PPT, Excel
+            </div>
         </section>
 
     </main>
@@ -1126,7 +1087,7 @@
 
     <script>
         // ============================================================
-        // FIREBASE CONFIG - YOUR CONFIG IS HERE!
+        // FIREBASE CONFIG
         // ============================================================
         const firebaseConfig = {
             apiKey: "AIzaSyAsCUJz9EIpBLNQjSUO-07u3mZhN_kwmro",
@@ -1144,21 +1105,91 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
+        const storage = firebase.storage();
 
         // ============================================================
         // STATE
         // ============================================================
         let currentUser = null;
         let userDocRef = null;
-
-        // Data collections
         let tasks = [];
-        let finances = [];
         let goals = [];
+        let finances = [];
         let resources = [];
         let healthData = { sleep: '', mood: 'Good', energy: '', stress: '' };
-        let focusData = { wasted: '', source: '' };
+        let focusData = { screenTime: '', mood: 'neutral' };
         let water = 0;
+        let goalMode = 'brief';
+        let healthMode = 'brief';
+        let selectedCity = 'dhaka';
+
+        // ============================================================
+        // 60 STUDY MOTIVATIONAL QUOTES
+        // ============================================================
+        const studyQuotes = [
+            { q: "The only way to do great work is to love what you do.", a: "Steve Jobs" },
+            { q: "Education is the most powerful weapon which you can use to change the world.", a: "Nelson Mandela" },
+            { q: "The beautiful thing about learning is that nobody can take it away from you.", a: "B.B. King" },
+            { q: "Study hard what interests you the most in the most undisciplined way.", a: "Richard Feynman" },
+            { q: "Success is the sum of small efforts, repeated day in and day out.", a: "Robert Collier" },
+            { q: "The expert in anything was once a beginner.", a: "Helen Hayes" },
+            { q: "There is no substitute for hard work.", a: "Thomas Edison" },
+            { q: "The mind is not a vessel to be filled, but a fire to be kindled.", a: "Plutarch" },
+            { q: "The secret of getting ahead is getting started.", a: "Mark Twain" },
+            { q: "Don't let what you cannot do interfere with what you can do.", a: "John Wooden" },
+            { q: "The only person who is educated is the one who has learned how to learn.", a: "Carl Rogers" },
+            { q: "Learning is not attained by chance, it must be sought for with ardor and diligence.", a: "Abigail Adams" },
+            { q: "The best way to predict the future is to create it.", a: "Peter Drucker" },
+            { q: "Knowledge is power. Information is liberating.", a: "Kofi Annan" },
+            { q: "The man who is too old to learn was probably always too old to learn.", a: "Henry S. Haskins" },
+            { q: "Education is not preparation for life; education is life itself.", a: "John Dewey" },
+            { q: "The more that you read, the more things you will know.", a: "Dr. Seuss" },
+            { q: "Learning never exhausts the mind.", a: "Leonardo da Vinci" },
+            { q: "The purpose of education is to replace an empty mind with an open one.", a: "Malcolm Forbes" },
+            { q: "I am always doing that which I cannot do, in order that I may learn how to do it.", a: "Pablo Picasso" },
+            { q: "The roots of education are bitter, but the fruit is sweet.", a: "Aristotle" },
+            { q: "Education is the key to unlock the golden door of freedom.", a: "George Washington Carver" },
+            { q: "Live as if you were to die tomorrow. Learn as if you were to live forever.", a: "Mahatma Gandhi" },
+            { q: "The capacity to learn is a gift; the ability to learn is a skill; the willingness to learn is a choice.",
+                a: "Brian Herbert" },
+            { q: "A person who won't read has no advantage over one who can't read.", a: "Mark Twain" },
+            { q: "The only thing that interferes with my learning is my education.", a: "Albert Einstein" },
+            { q: "Education is the passport to the future.", a: "Malcolm X" },
+            { q: "The great aim of education is not knowledge but action.", a: "Herbert Spencer" },
+            { q: "The more I learn, the more I realize how much I don't know.", a: "Albert Einstein" },
+            { q: "Study without desire spoils the memory, and it retains nothing that it takes in.", a: "Leonardo da Vinci" },
+            { q: "The task of the modern educator is not to cut down jungles, but to irrigate deserts.", a: "C.S. Lewis" },
+            { q: "Education is the movement from darkness to light.", a: "Allan Bloom" },
+            { q: "The highest result of education is tolerance.", a: "Helen Keller" },
+            { q: "Education is not the filling of a pail, but the lighting of a fire.", a: "William Butler Yeats" },
+            { q: "The whole purpose of education is to turn mirrors into windows.", a: "Sydney J. Harris" },
+            { q: "A man's mind, stretched by new ideas, may never return to its original dimensions.", a: "Oliver Wendell Holmes" },
+            { q: "The only real failure in life is not to be true to the best one knows.", a: "Buddha" },
+            { q: "Learning is a treasure that will follow its owner everywhere.", a: "Chinese Proverb" },
+            { q: "One book, one pen, one child, and one teacher can change the world.", a: "Malala Yousafzai" },
+            { q: "The beautiful thing about learning is that nobody can take it away from you.", a: "B.B. King" },
+            { q: "Education is not how much you have committed to memory, but the ability to use it.", a: "Immanuel Kant" },
+            { q: "To learn is to change. Education is the way to change.", a: "Milan Kundera" },
+            { q: "The mind grows by what it feeds on.", a: "J.G. Holland" },
+            { q: "All the world is a laboratory to the inquiring mind.", a: "Martin H. Fischer" },
+            { q: "The only source of knowledge is experience.", a: "Albert Einstein" },
+            { q: "Education is the best friend. An educated person is respected everywhere.", a: "Chanakya" },
+            { q: "The more knowledge you gain, the more you realize how little you know.", a: "Socrates" },
+            { q: "Diligence is the mother of good fortune.", a: "Benjamin Franklin" },
+            { q: "The secret of success is constancy to purpose.", a: "Benjamin Disraeli" },
+            { q: "What we learn with pleasure we never forget.", a: "Alfred Mercier" },
+            { q: "Education is the ability to listen to almost anything without losing your temper.", a: "Robert Frost" },
+            { q: "The mind is everything. What you think you become.", a: "Buddha" },
+            { q: "Knowledge is the food of the soul.", a: "Plato" },
+            { q: "Education is the most powerful weapon for changing the world.", a: "Nelson Mandela" },
+            { q: "The roots of education are bitter, but the fruit is sweet.", a: "Aristotle" },
+            { q: "The learning process continues until the day you die.", a: "Kirk Douglas" },
+            { q: "Knowledge is the key to success.", a: "Napoleon Hill" },
+            { q: "A little learning is a dangerous thing.", a: "Alexander Pope" },
+            { q: "Education is the foundation upon which we build our future.", a: "Christine Gregoire" },
+            { q: "The more you know, the more you can achieve.", a: "Zig Ziglar" },
+            { q: "Study is the compass that guides us through the sea of life.", a: "Buddha" }
+        ];
 
         // ============================================================
         // DOM REFS
@@ -1182,15 +1213,14 @@
                 currentUser = user;
                 loginOverlay.classList.add('hidden');
                 renderUserBadge(user);
-                // Initialize Firestore doc
                 userDocRef = db.collection('users').doc(user.uid);
                 await loadUserData();
                 renderAll();
-                // Start auto-save listeners
                 setupAutoSave();
-                // Start prayer times
                 updatePrayerTimes();
                 setInterval(updatePrayerTimes, 60000);
+                // Show random quote on load
+                showRandomQuote();
             } else {
                 currentUser = null;
                 loginOverlay.classList.remove('hidden');
@@ -1201,7 +1231,7 @@
         function renderUserBadge(user) {
             userBadgeContainer.innerHTML = `
                 <div class="user-badge">
-                    <img src="${user.photoURL || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.displayName || 'User')}" alt="avatar">
+                    <img src="${user.photoURL || 'https://ui-avatars.com/api/?name='+encodeURIComponent(user.displayName||'User')}" alt="avatar">
                     <div>
                         <div class="name">${user.displayName || 'User'}</div>
                         <div class="email">${user.email}</div>
@@ -1224,12 +1254,13 @@
                 if (doc.exists) {
                     const data = doc.data();
                     tasks = data.tasks || [];
-                    finances = data.finances || [];
                     goals = data.goals || [];
+                    finances = data.finances || [];
                     resources = data.resources || [];
                     healthData = data.health || { sleep: '', mood: 'Good', energy: '', stress: '' };
-                    focusData = data.focus || { wasted: '', source: '' };
+                    focusData = data.focus || { screenTime: '', mood: 'neutral' };
                     water = data.water || 0;
+                    selectedCity = data.selectedCity || 'dhaka';
                 }
                 setSync('ok');
             } catch (e) {
@@ -1244,12 +1275,13 @@
             try {
                 await userDocRef.set({
                     tasks,
-                    finances,
                     goals,
+                    finances,
                     resources,
                     health: healthData,
                     focus: focusData,
                     water,
+                    selectedCity,
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
                     email: currentUser.email,
                     name: currentUser.displayName
@@ -1267,7 +1299,7 @@
         }
 
         // ============================================================
-        // AUTO-SAVE (debounced)
+        // AUTO-SAVE
         // ============================================================
         let saveTimeout = null;
 
@@ -1280,13 +1312,11 @@
         }
 
         function setupAutoSave() {
-            // Intercept all data-changing functions
             const origRender = renderAll;
-            renderAll = function () {
+            renderAll = function() {
                 origRender();
                 autoSave();
             };
-            // Also save on input changes
             document.querySelectorAll('input, select, textarea').forEach(el => {
                 el.addEventListener('change', autoSave);
                 el.addEventListener('input', autoSave);
@@ -1319,86 +1349,46 @@
         setInterval(tickClock, 1000);
 
         // ============================================================
-        // QUOTES
+        // MOTIVATIONAL QUOTES (60 quotes, random on load)
         // ============================================================
-        const quotes = [
-            { q: "Don't count the days, make the days count.", a: "Muhammad Ali" },
-            { q: "We are what we repeatedly do. Excellence, then, is not an act, but a habit.", a: "Will Durant" },
-            { q: "Beware of little expenses. A small leak will sink a great ship.", a: "Benjamin Franklin" },
-            { q: "Your future is created by what you do today, not tomorrow.", a: "Robert Kiyosaki" },
-            { q: "Discipline is choosing between what you want now and what you want most.", a: "Abraham Lincoln" },
-            { q: "The secret of getting ahead is getting started.", a: "Mark Twain" },
-            { q: "It always seems impossible until it's done.", a: "Nelson Mandela" },
-            { q: "Small daily improvements are the key to staggering long-term results.", a: "James Clear" },
-            { q: "You do not rise to the level of your goals; you fall to the level of your systems.", a: "James Clear" },
-            { q: "A year from now you may wish you had started today.", a: "Karen Lamb" },
-            { q: "Well done is better than well said.", a: "Benjamin Franklin" },
-            { q: "The pain of discipline weighs ounces, the pain of regret weighs tons.", a: "Jim Rohn" },
-            { q: "Motivation is what gets you started. Habit is what keeps you going.", a: "Jim Ryun" },
-            { q: "Don't watch the clock; do what it does. Keep going.", a: "Sam Levenson" },
-            { q: "Success is the sum of small efforts, repeated day in and day out.", a: "Robert Collier" },
-            { q: "Either you run the day, or the day runs you.", a: "Jim Rohn" },
-            { q: "Focus on being productive instead of busy.", a: "Tim Ferriss" },
-            { q: "What you do every day matters more than what you do once in a while.", a: "Gretchen Rubin" },
-            { q: "The best time to plant a tree was twenty years ago. The second best time is now.", a: "Chinese Proverb" },
-            { q: "Rest when you're weary. Refresh and renew yourself. But then get back to work.", a: "Ralph Marston" },
-            { q: "You can't build a reputation on what you're going to do.", a: "Henry Ford" },
-            { q: "Amateurs sit and wait for inspiration; the rest of us just get up and go to work.", a: "Stephen King" },
-            { q: "How you spend your days is, of course, how you spend your life.", a: "Annie Dillard" },
-            { q: "Progress, not perfection.", a: "Anonymous" }
-        ];
+        let lastQuoteIndex = -1;
 
-        function dayOfYear(d) {
-            const start = new Date(d.getFullYear(), 0, 0);
-            const diff = (d - start) + ((start.getTimezoneOffset() - d.getTimezoneOffset()) * 60000);
-            return Math.floor(diff / 86400000);
-        }
-
-        function isLeap(y) { return (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0; }
-
-        const today = new Date();
-        const doy = dayOfYear(today);
-        const totalDays = isLeap(today.getFullYear()) ? 366 : 365;
-        let dailyIndex = (doy - 1) % quotes.length;
-
-        function renderQuote(index, isDaily) {
-            const qq = quotes[index];
-            document.getElementById('quote-text').innerHTML = qq.q + '<span class="cursor">▍</span>';
-            document.getElementById('quote-author').textContent = '— ' + qq.a;
-            document.getElementById('signal-tag').textContent =
-                isDaily ? ('INCOMING TRANSMISSION · DAY ' + doy + '/' + totalDays) :
-                    'MANUAL OVERRIDE · UNSCHEDULED SIGNAL';
-            document.getElementById('quote-year').textContent = today.getFullYear() + ' ARCHIVE · ' + quotes.length +
-                ' SIGNALS ON FILE';
-        }
-        renderQuote(dailyIndex, true);
-
-        document.getElementById('shuffle-btn').addEventListener('click', function () {
+        function showRandomQuote() {
             let idx;
-            do { idx = Math.floor(Math.random() * quotes.length); } while (idx === dailyIndex && quotes.length > 1);
-            renderQuote(idx, false);
-        });
+            do {
+                idx = Math.floor(Math.random() * studyQuotes.length);
+            } while (idx === lastQuoteIndex && studyQuotes.length > 1);
+            lastQuoteIndex = idx;
+            const quote = studyQuotes[idx];
+            document.getElementById('quote-text').innerHTML = `"${quote.q}"<span class="cursor">▍</span>`;
+            document.getElementById('quote-author').textContent = '— ' + quote.a;
+            document.getElementById('signal-tag').textContent = '📚 STUDY MOTIVATION · #' + (idx + 1);
+        }
+
+        // Show new quote every 30 seconds for freshness
+        setInterval(showRandomQuote, 30000);
 
         // ============================================================
         // RENDER ALL
         // ============================================================
         function renderAll() {
             renderTasks();
-            renderFinances();
             renderGoals();
+            renderFinances();
             renderResources();
             renderWater();
             renderHealthSuggestions();
             renderFocusSuggestions();
             renderGoalSuggestions();
-            // Load health/focus inputs
+
             document.getElementById('sleep-input').value = healthData.sleep || '';
             document.getElementById('mood-input').value = healthData.mood || 'Good';
             document.getElementById('energy-input').value = healthData.energy || '';
             document.getElementById('stress-input').value = healthData.stress || '';
-            document.getElementById('time-wasted').value = focusData.wasted || '';
-            document.getElementById('distraction-source').value = focusData.source || '';
-            renderWaste(parseFloat(focusData.wasted));
+            document.getElementById('screen-time').value = focusData.screenTime || '';
+            document.getElementById('mood-selector').value = focusData.mood || 'neutral';
+            document.getElementById('city-select').value = selectedCity || 'dhaka';
+            renderFocusMood(parseFloat(focusData.screenTime), focusData.mood);
         }
 
         // ============================================================
@@ -1408,20 +1398,23 @@
             const list = document.getElementById('task-list');
             list.innerHTML = '';
             if (tasks.length === 0) {
-                list.innerHTML = '<li class="empty">No tasks logged yet.</li>';
+                list.innerHTML = '<li class="empty">No tasks yet. Add one above!</li>';
             }
             tasks.forEach((t, i) => {
                 const li = document.createElement('li');
                 li.className = 'row';
                 li.innerHTML =
-                    `<span class="row-text${t.done ? ' done' : ''}" data-i="${i}" data-action="toggle">${escapeHtml(t.name)}</span>` +
-                    `<button class="row-x" data-i="${i}" data-action="remove">✕</button>`;
+                    `<span class="row-text${t.done?' done':''}" data-i="${i}" data-action="toggle">${escapeHtml(t.name)}</span>` +
+                    `<span style="display:flex;gap:4px;align-items:center;">
+                        <button class="row-x" data-i="${i}" data-action="toggle" style="color:${t.done?'var(--green)':'var(--text-dim)'};font-size:14px;">${t.done?'✓':'☐'}</button>
+                        <button class="row-x" data-i="${i}" data-action="remove">✕</button>
+                    </span>`;
                 list.appendChild(li);
             });
             document.getElementById('task-count').textContent = tasks.filter(t => !t.done).length + ' active';
         }
 
-        document.getElementById('task-form').addEventListener('submit', function (e) {
+        document.getElementById('task-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const input = document.getElementById('task-input');
             if (!input.value.trim()) return;
@@ -1430,61 +1423,13 @@
             renderAll();
         });
 
-        document.getElementById('task-list').addEventListener('click', function (e) {
+        document.getElementById('task-list').addEventListener('click', function(e) {
             const t = e.target;
             const i = t.getAttribute('data-i');
             if (i === null) return;
             const idx = parseInt(i, 10);
             if (t.getAttribute('data-action') === 'toggle') { tasks[idx].done = !tasks[idx].done; } else if (t.getAttribute(
-                'data-action') === 'remove') { tasks.splice(idx, 1); }
-            renderAll();
-        });
-
-        // ============================================================
-        // FINANCE
-        // ============================================================
-        function renderFinances() {
-            const list = document.getElementById('finance-list');
-            list.innerHTML = '';
-            let lent = 0,
-                borrowed = 0;
-            if (finances.length === 0) {
-                list.innerHTML = '<li class="empty">No ledger entries yet.</li>';
-            }
-            finances.forEach((f, i) => {
-                if (f.type === 'lent') lent += f.amount;
-                if (f.type === 'borrowed') borrowed += f.amount;
-                const color = f.type === 'lent' ? 'var(--green)' : f.type === 'borrowed' ? 'var(--red)' :
-                    'var(--text-dim)';
-                const li = document.createElement('li');
-                li.className = 'row';
-                li.innerHTML =
-                    `<span>${escapeHtml(f.person)} <span style="color:var(--text-dimmer);">(${f.type})</span></span>` +
-                    `<span style="display:flex;align-items:center;gap:6px;">` +
-                    `<span class="mono" style="color:${color};font-weight:600;">৳${f.amount.toFixed(2)}</span>` +
-                    `<button class="row-x" data-i="${i}">✕</button></span>`;
-                list.appendChild(li);
-            });
-            document.getElementById('total-lent').textContent = '৳' + lent.toFixed(2);
-            document.getElementById('total-borrowed').textContent = '৳' + borrowed.toFixed(2);
-        }
-
-        document.getElementById('finance-form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const person = document.getElementById('fin-person').value.trim();
-            const amount = parseFloat(document.getElementById('fin-amount').value);
-            const type = document.getElementById('fin-type').value;
-            if (!person || isNaN(amount) || amount <= 0) { alert('Enter valid person and amount.'); return; }
-            finances.push({ person, amount, type });
-            document.getElementById('fin-person').value = '';
-            document.getElementById('fin-amount').value = '';
-            renderAll();
-        });
-
-        document.getElementById('finance-list').addEventListener('click', function (e) {
-            const i = e.target.getAttribute('data-i');
-            if (i === null) return;
-            finances.splice(parseInt(i, 10), 1);
+                    'data-action') === 'remove') { tasks.splice(idx, 1); }
             renderAll();
         });
 
@@ -1501,14 +1446,14 @@
                 const li = document.createElement('li');
                 li.className = 'row';
                 li.innerHTML =
-                    `<span>${escapeHtml(g.name)} ${g.deadline ? '<span style="color:var(--text-dimmer);font-size:10px;">· ' + escapeHtml(g.deadline) + '</span>' : ''}</span>` +
+                    `<span>${escapeHtml(g.name)} ${g.deadline ? '<span style="color:var(--text-dimmer);font-size:10px;">· '+escapeHtml(g.deadline)+'</span>' : ''}</span>` +
                     `<button class="row-x" data-i="${i}">✕</button>`;
                 list.appendChild(li);
             });
             document.getElementById('goal-count').textContent = goals.length + ' goals';
         }
 
-        document.getElementById('goal-form').addEventListener('submit', function (e) {
+        document.getElementById('goal-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const name = document.getElementById('goal-input').value.trim();
             const deadline = document.getElementById('goal-deadline').value.trim();
@@ -1519,7 +1464,7 @@
             renderAll();
         });
 
-        document.getElementById('goal-list').addEventListener('click', function (e) {
+        document.getElementById('goal-list').addEventListener('click', function(e) {
             const i = e.target.getAttribute('data-i');
             if (i === null) return;
             goals.splice(parseInt(i, 10), 1);
@@ -1532,188 +1477,158 @@
         function renderGoalSuggestions() {
             const box = document.getElementById('goal-suggestion');
             if (goals.length === 0) {
-                box.textContent = 'Set a goal above to receive a personalized action plan.';
+                box.textContent = 'Set a goal above to receive personalized guidance.';
                 return;
             }
             const latest = goals[goals.length - 1];
-            const suggestions = [
-                `🎯 For "${latest.name}": Break it down into 3-4 weekly milestones.`,
-                `📅 ${latest.deadline ? `With ${latest.deadline} deadline, aim for 30-45 min of focused work daily.` : 'Set a deadline to create urgency.'}`,
-                `📚 Find 2-3 high-quality resources and schedule 20-min review sessions.`,
-                `✅ Track progress weekly: what worked, what didn't, adjust approach.`
-            ];
-            box.textContent = suggestions.join(' ');
-        }
-
-        // ============================================================
-        // RESOURCES
-        // ============================================================
-        function renderResources() {
-            const list = document.getElementById('resource-list');
-            list.innerHTML = '';
-            if (resources.length === 0) {
-                list.innerHTML = '<li class="empty">Add study resources by subject & topic.</li>';
-            }
-            resources.forEach((r, i) => {
-                const li = document.createElement('li');
-                li.className = 'row';
-                li.innerHTML =
-                    `<span><span class="resource-tag">${escapeHtml(r.subject)}</span> ${escapeHtml(r.topic)} ${r.link ? '🔗' : ''}</span>` +
-                    `<span style="display:flex;gap:6px;align-items:center;">` +
-                    `${r.link ? `<a href="${escapeHtml(r.link)}" target="_blank" style="color:var(--cyan);font-size:11px;text-decoration:none;">↗</a>` : ''}` +
-                    `<button class="row-x" data-i="${i}">✕</button></span>`;
-                list.appendChild(li);
-            });
-            document.getElementById('resource-count').textContent = resources.length + ' topics';
-        }
-
-        document.getElementById('resource-form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const subject = document.getElementById('resource-subject').value.trim();
-            const topic = document.getElementById('resource-topic').value.trim();
-            const link = document.getElementById('resource-link').value.trim();
-            if (!subject || !topic) { alert('Enter subject and topic.'); return; }
-            resources.push({ subject, topic, link });
-            document.getElementById('resource-subject').value = '';
-            document.getElementById('resource-topic').value = '';
-            document.getElementById('resource-link').value = '';
-            renderAll();
-        });
-
-        document.getElementById('resource-list').addEventListener('click', function (e) {
-            const i = e.target.getAttribute('data-i');
-            if (i === null) return;
-            resources.splice(parseInt(i, 10), 1);
-            renderAll();
-        });
-
-        // ============================================================
-        // HEALTH SUGGESTIONS
-        // ============================================================
-        function renderHealthSuggestions() {
-            const box = document.getElementById('health-suggestion-box');
-            const sleep = parseFloat(document.getElementById('sleep-input').value);
-            const mood = document.getElementById('mood-input').value;
-            const energy = parseInt(document.getElementById('energy-input').value);
-            const stress = parseInt(document.getElementById('stress-input').value);
             let suggestions = [];
 
-            if (!isNaN(sleep)) {
-                if (sleep < 6) suggestions.push('🛌 Sleep is low (<6h). Aim for 7-8h for better focus.');
-                else if (sleep > 9) suggestions.push('😴 Sleeping >9h? Could be a sign of fatigue or low energy.');
-                else suggestions.push('😊 Good sleep! Keep the routine consistent.');
-            }
-            if (!isNaN(energy)) {
-                if (energy < 4) suggestions.push('⚡ Low energy. Try a short walk or 5-min meditation.');
-                else if (energy > 8) suggestions.push('🔥 High energy! Channel it into your top priority task.');
-            }
-            if (!isNaN(stress)) {
-                if (stress > 7) suggestions.push('😰 High stress detected. Try deep breathing (4-7-8) or a quick break.');
-                else if (stress < 4) suggestions.push('🌈 Stress is under control. Great time for deep work.');
-            }
-            if (mood === 'Anxious') suggestions.push('🧘 Feeling anxious? Try grounding: 5-4-3-2-1 technique.');
-            if (mood === 'Tired') suggestions.push('☕ Low energy? Hydrate and take a 10-min power nap if possible.');
-
-            if (suggestions.length === 0) {
-                suggestions.push('💪 Log your sleep, mood, energy & stress for personalized tips.');
-            }
-            box.textContent = suggestions.join(' ');
-        }
-
-        // ============================================================
-        // FOCUS SUGGESTIONS
-        // ============================================================
-        function renderFocusSuggestions() {
-            const box = document.getElementById('focus-suggestion-box');
-            const wasted = parseFloat(document.getElementById('time-wasted').value);
-            const source = document.getElementById('distraction-source').value.trim();
-            let suggestions = [];
-
-            if (!isNaN(wasted)) {
-                if (wasted > 2) suggestions.push(`⚠️ ${wasted}h wasted today. Try the Pomodoro method (25 min work, 5 min break).`);
-                else if (wasted > 1) suggestions.push(`⚡ ${wasted}h lost. Schedule a "focus block" for your most important task.`);
-                else if (wasted >= 0) suggestions.push(`✅ ${wasted}h lost — under control. Keep building the focus muscle.`);
-            }
-            if (source) {
-                suggestions.push(`🔍 Distraction source: "${source}". Try app blockers or a physical timer.`);
-            }
-            if (suggestions.length === 0) {
-                suggestions.push('📊 Log distraction hours and source for actionable feedback.');
-            }
-            box.textContent = suggestions.join(' ');
-        }
-
-        // ============================================================
-        // GUARDRAIL / WASTE
-        // ============================================================
-        function renderWaste(hrs) {
-            const lamp = document.getElementById('waste-lamp');
-            const text = document.getElementById('waste-text');
-            if (isNaN(hrs) || hrs === '') {
-                lamp.className = 'lamp';
-                text.textContent = 'Log today\'s number to get feedback.';
+            if (goalMode === 'off') {
+                box.textContent = '🤖 AI Assistant is OFF. Toggle ON for guidance.';
                 return;
             }
-            if (hrs > 2) {
-                lamp.className = 'lamp on-bad';
-                text.textContent = `${hrs}h today → ~${(hrs * 7).toFixed(1)}h/week. Time to set tighter boundaries.`;
+
+            if (goalMode === 'brief') {
+                suggestions = [
+                    `🎯 For "${latest.name}": Break it down into weekly milestones.`,
+                    `📅 ${latest.deadline ? `With ${latest.deadline} deadline, aim for 30-45 min of focused work daily.` : 'Set a deadline to create urgency.'}`,
+                    `📚 Find 2-3 high-quality resources and schedule review sessions.`,
+                    `✅ Track progress weekly: what worked, what didn't, adjust approach.`
+                ];
+                box.textContent = suggestions.join(' ');
             } else {
-                lamp.className = 'lamp on-good';
-                text.textContent = `Distraction under control (${hrs}h). Keep protecting your focus!`;
+                // Detailed mode
+                suggestions = [
+                    `📋 DETAILED PLAN for "${latest.name}":`,
+                    ``,
+                    `📌 Phase 1: Foundation (Week 1-2)`,
+                    `• Set clear learning objectives and gather resources`,
+                    `• Allocate 1-2 hours daily for focused study`,
+                    `• Create a study schedule and stick to it`,
+                    ``,
+                    `📌 Phase 2: Deep Learning (Week 3-6)`,
+                    `• Practice active recall and spaced repetition`,
+                    `• Take notes and summarize key concepts`,
+                    `• Join study groups or find a study partner`,
+                    ``,
+                    `📌 Phase 3: Mastery (Week 7+)`,
+                    `• Teach concepts to others (best way to learn)`,
+                    `• Work on projects or real-world applications`,
+                    `• Review and reinforce weak areas`,
+                    ``,
+                    `💡 ${latest.deadline ? `With your ${latest.deadline} deadline, adjust pace accordingly.` : 'Set a realistic deadline for best results.'}`,
+                    `🕌 As a Muslim, start with Bismillah and make dua for beneficial knowledge.`
+                ];
+                box.textContent = suggestions.join(' ');
             }
         }
 
-        // ============================================================
-        // WATER
-        // ============================================================
-        const RING_CIRCUMFERENCE = 150.8;
-
-        function renderWater() {
-            const frac = Math.min(1, water / 8);
-            const offset = RING_CIRCUMFERENCE * (1 - frac);
-            const ring = document.getElementById('water-ring');
-            if (ring) {
-                ring.setAttribute('stroke-dashoffset', offset.toFixed(1));
-            }
-            const num = document.getElementById('water-num');
-            if (num) num.textContent = water + '/8';
-            const count = document.getElementById('water-count');
-            if (count) count.textContent = water + ' of 8 glasses';
-        }
-
-        // Water controls
-        document.addEventListener('DOMContentLoaded', function () {
-            const upBtn = document.getElementById('water-up');
-            const downBtn = document.getElementById('water-down');
-            if (upBtn) {
-                upBtn.addEventListener('click', function () {
-                    if (water < 8) {
-                        water++;
-                        renderAll();
-                    }
-                });
-            }
-            if (downBtn) {
-                downBtn.addEventListener('click', function () {
-                    water = Math.max(0, water - 1);
-                    renderAll();
-                });
-            }
+        // Goal mode toggles
+        document.getElementById('goal-mode-brief').addEventListener('click', function() {
+            goalMode = 'brief';
+            document.querySelectorAll('#goal-mode-brief, #goal-mode-detailed, #goal-toggle-off').forEach(b =>
+                b.classList.remove('active'));
+            this.classList.add('active');
+            renderGoalSuggestions();
+            autoSave();
+        });
+        document.getElementById('goal-mode-detailed').addEventListener('click', function() {
+            goalMode = 'detailed';
+            document.querySelectorAll('#goal-mode-brief, #goal-mode-detailed, #goal-toggle-off').forEach(b =>
+                b.classList.remove('active'));
+            this.classList.add('active');
+            renderGoalSuggestions();
+            autoSave();
+        });
+        document.getElementById('goal-toggle-off').addEventListener('click', function() {
+            goalMode = 'off';
+            document.querySelectorAll('#goal-mode-brief, #goal-mode-detailed, #goal-toggle-off').forEach(b =>
+                b.classList.remove('active'));
+            this.classList.add('active');
+            renderGoalSuggestions();
+            autoSave();
         });
 
         // ============================================================
-        // PRAYER TIMES (Bangladesh - Dhaka)
+        // FINANCE (with person aggregation)
         // ============================================================
+        function renderFinances() {
+            const list = document.getElementById('finance-list');
+            list.innerHTML = '';
+            // Aggregate by person
+            const personMap = {};
+            finances.forEach(f => {
+                const key = f.person.toLowerCase();
+                if (!personMap[key]) {
+                    personMap[key] = { person: f.person, lent: 0, borrowed: 0, expenses: 0 };
+                }
+                if (f.type === 'lent') personMap[key].lent += f.amount;
+                else if (f.type === 'borrowed') personMap[key].borrowed += f.amount;
+                else if (f.type === 'expense') personMap[key].expenses += f.amount;
+            });
+
+            let totalLent = 0,
+                totalBorrowed = 0;
+
+            Object.values(personMap).forEach(p => {
+                const net = p.lent - p.borrowed;
+                totalLent += p.lent;
+                totalBorrowed += p.borrowed;
+                const li = document.createElement('li');
+                li.className = 'row';
+                const color = net > 0 ? 'var(--green)' : net < 0 ? 'var(--red)' : 'var(--text-dim)';
+                li.innerHTML =
+                    `<span><strong>${escapeHtml(p.person)}</strong> <span style="color:var(--text-dimmer);font-size:10px;">(net: ${net > 0 ? 'receivable' : net < 0 ? 'payable' : 'settled'})</span></span>` +
+                    `<span style="color:${color};font-weight:600;">৳${net.toFixed(2)}</span>`;
+                list.appendChild(li);
+            });
+
+            if (Object.keys(personMap).length === 0) {
+                list.innerHTML = '<li class="empty">No ledger entries yet.</li>';
+            }
+
+            document.getElementById('total-lent').textContent = '৳' + totalLent.toFixed(2);
+            document.getElementById('total-borrowed').textContent = '৳' + totalBorrowed.toFixed(2);
+        }
+
+        document.getElementById('finance-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const person = document.getElementById('fin-person').value.trim();
+            const amount = parseFloat(document.getElementById('fin-amount').value);
+            const type = document.getElementById('fin-type').value;
+            if (!person || isNaN(amount) || amount <= 0) { alert('Enter valid person and amount.'); return; }
+            finances.push({ person, amount, type });
+            document.getElementById('fin-person').value = '';
+            document.getElementById('fin-amount').value = '';
+            renderAll();
+        });
+
+        // ============================================================
+        // PRAYER TIMES (with city selection)
+        // ============================================================
+        const cityCoordinates = {
+            dhaka: { lat: 23.8103, lng: 90.4125, name: 'Dhaka' },
+            chittagong: { lat: 22.3569, lng: 91.7832, name: 'Chittagong' },
+            sylhet: { lat: 24.8949, lng: 91.8687, name: 'Sylhet' },
+            rajshahi: { lat: 24.3745, lng: 88.6042, name: 'Rajshahi' },
+            khulna: { lat: 22.8456, lng: 89.5403, name: 'Khulna' },
+            barishal: { lat: 22.7010, lng: 90.3535, name: 'Barishal' },
+            rangpur: { lat: 25.7439, lng: 89.2752, name: 'Rangpur' },
+            mymensingh: { lat: 24.7471, lng: 90.4203, name: 'Mymensingh' }
+        };
+
+        document.getElementById('city-select').addEventListener('change', function() {
+            selectedCity = this.value;
+            updatePrayerTimes();
+            autoSave();
+        });
+
         function updatePrayerTimes() {
             const now = new Date();
-            const dateStr = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate())
-                .padStart(2, '0');
+            const city = cityCoordinates[selectedCity] || cityCoordinates.dhaka;
+            document.getElementById('prayer-location').textContent = city.name + ', BD';
 
-            // Simple calculation based on Dhaka (approximate)
-            const lat = 23.8103,
-                lng = 90.4125;
-            const prayerTimes = calculatePrayerTimes(now, lat, lng);
-
+            const prayerTimes = calculatePrayerTimes(now, city.lat, city.lng);
             const grid = document.getElementById('prayer-grid');
             if (!grid) return;
             grid.innerHTML = '';
@@ -1745,22 +1660,14 @@
             if (!nextPrayer) {
                 const tomorrow = new Date(now);
                 tomorrow.setDate(tomorrow.getDate() + 1);
-                const nextFajr = calculatePrayerTimes(tomorrow, lat, lng).fajr;
+                const nextFajr = calculatePrayerTimes(tomorrow, city.lat, city.lng).fajr;
                 nextPrayer = `Fajr (tomorrow) at ${nextFajr}`;
             }
 
-            const nextEl = document.getElementById('next-prayer');
-            if (nextEl) nextEl.textContent = nextPrayer;
-            const locEl = document.getElementById('prayer-location');
-            if (locEl) locEl.textContent = 'Dhaka, BD';
+            document.getElementById('next-prayer').textContent = nextPrayer;
         }
 
-        // Simplified prayer time calculator (approximate)
         function calculatePrayerTimes(date, lat, lng) {
-            const day = date.getDate();
-            const month = date.getMonth() + 1;
-            const year = date.getFullYear();
-
             const baseTimes = {
                 fajr: '05:00',
                 dhuhr: '12:00',
@@ -1790,6 +1697,314 @@
         }
 
         // ============================================================
+        // HEALTH SUGGESTIONS (AI Agent with Islamic context)
+        // ============================================================
+        function renderHealthSuggestions() {
+            const box = document.getElementById('health-suggestion-box');
+            const sleep = parseFloat(document.getElementById('sleep-input').value);
+            const mood = document.getElementById('mood-input').value;
+            const energy = parseInt(document.getElementById('energy-input').value);
+            const stress = parseInt(document.getElementById('stress-input').value);
+            let suggestions = [];
+
+            const isDetailed = healthMode === 'detailed';
+
+            if (isDetailed) {
+                suggestions.push('🕌 Assalamu Alaikum! Here\'s a comprehensive wellness plan:');
+            }
+
+            if (!isNaN(sleep)) {
+                if (sleep < 6) {
+                    suggestions.push(isDetailed ?
+                        '💤 Sleep (5.9h): This is below the Islamic recommendation. The Prophet ﷺ would sleep early and wake for Tahajjud. Aim for 7-8h. Benefits: better focus, emotional stability. Detriments: irritability, poor memory.' :
+                        '🛌 Sleep is low (<6h). Aim for 7-8h for better focus.');
+                } else if (sleep > 9) {
+                    suggestions.push(isDetailed ?
+                        '😴 Excess sleep (9h+): While rest is good, oversleeping may indicate fatigue or lack of purpose. The Prophet ﷺ discouraged excessive sleep. Benefits: recovery. Detriments: lethargy, wasted time.' :
+                        '😴 Sleeping >9h? Could be a sign of fatigue or low energy.');
+                } else {
+                    suggestions.push(isDetailed ?
+                        '😊 Masha\'Allah! Good sleep (7-8h). This is aligned with the Sunnah of moderate sleep. Benefits: physical recovery, mental clarity, spiritual alertness for Fajr.' :
+                        '😊 Good sleep! Keep the routine consistent.');
+                }
+            }
+
+            if (!isNaN(energy)) {
+                if (energy < 4) {
+                    suggestions.push(isDetailed ?
+                        '⚡ Low energy (3/10): This may affect your worship and studies. Solutions: eat nutritious food, drink water, take short walks, and make dua for strength. The Prophet ﷺ would seek refuge from laziness.' :
+                        '⚡ Low energy. Try a short walk or 5-min meditation.');
+                } else if (energy > 8) {
+                    suggestions.push(isDetailed ?
+                        '🔥 High energy (9/10)! Channel this into productive work and worship. Use this time for difficult tasks, memorization, and physical activity. Remember to thank Allah for this blessing.' :
+                        '🔥 High energy! Channel it into your top priority task.');
+                }
+            }
+
+            if (!isNaN(stress)) {
+                if (stress > 7) {
+                    suggestions.push(isDetailed ?
+                        '😰 High stress (8/10): This is a trial from Allah. Islamic solutions: do Dhikr (remembrance of Allah), perform Wudu, pray 2 rakah, and recite "Hasbunallahu wa ni\'mal wakeel". Benefits: peace of mind. Detriments: health issues if unmanaged.' :
+                        '😰 High stress detected. Try deep breathing or Dhikr.');
+                } else if (stress < 4) {
+                    suggestions.push(isDetailed ?
+                        '🌈 Stress is under control (3/10). This is a blessing from Allah. Use this peace to focus on your studies and strengthen your relationship with Allah. Great time for deep work.' :
+                        '🌈 Stress is under control. Great time for deep work.');
+                }
+            }
+
+            if (mood === 'Anxious') {
+                suggestions.push(isDetailed ?
+                    '🧘 Anxiety is a test from Allah. Practical steps: 1) Perform Wudu and pray 2 rakah, 2) Do Dhikr: "La hawla wa la quwwata illa billah", 3) Seek medical help if persistent. The Prophet ﷺ taught: "If you trust in Allah as He should be trusted, He will provide for you as He provides for birds."' :
+                    '🧘 Feeling anxious? Try grounding or Dhikr.');
+            }
+
+            if (mood === 'Tired') {
+                suggestions.push(isDetailed ?
+                    '☕ Feeling tired? Our bodies have rights over us as the Prophet ﷺ said. Solutions: 1) Take a 10-min power nap (Qaylulah), 2) Drink water, 3) Eat dates for natural energy, 4) Do light exercise. Remember to make dua for energy in worship.' :
+                    '☕ Low energy? Hydrate and take a 10-min power nap.');
+            }
+
+            if (suggestions.length === 0 || !isDetailed) {
+                if (suggestions.length === 0) {
+                    suggestions.push('💪 Log your sleep, mood, energy & stress for personalized Islamic wellness tips.');
+                }
+            }
+
+            box.textContent = suggestions.join(' ');
+        }
+
+        // Health mode toggle
+        document.getElementById('health-mode-brief').addEventListener('click', function() {
+            healthMode = 'brief';
+            document.querySelectorAll('#health-mode-brief, #health-mode-detailed').forEach(b =>
+                b.classList.remove('active'));
+            this.classList.add('active');
+            renderHealthSuggestions();
+        });
+        document.getElementById('health-mode-detailed').addEventListener('click', function() {
+            healthMode = 'detailed';
+            document.querySelectorAll('#health-mode-brief, #health-mode-detailed').forEach(b =>
+                b.classList.remove('active'));
+            this.classList.add('active');
+            renderHealthSuggestions();
+        });
+
+        // ============================================================
+        // FOCUS GUARDRAIL (with color coding)
+        // ============================================================
+        function renderFocusSuggestions() {
+            const box = document.getElementById('focus-suggestion-box');
+            const screenTime = parseFloat(document.getElementById('screen-time').value);
+            const mood = document.getElementById('mood-selector').value;
+            let suggestions = [];
+
+            if (!isNaN(screenTime)) {
+                if (screenTime > 6) {
+                    suggestions.push(`⚠️ ${screenTime}h screen time is high. The Prophet ﷺ taught moderation in all things.`);
+                    suggestions.push(`🕌 As a Muslim brother, consider: reducing screen time before Fajr, using apps to limit usage, and replacing screen time with Dhikr or Quran.`);
+                    suggestions.push(`💡 Benefits: better sleep, more time for family and worship, improved focus in studies.`);
+                } else if (screenTime > 3) {
+                    suggestions.push(`⚡ ${screenTime}h screen time. Try the 20-20-20 rule: every 20 min, look 20 ft away for 20 sec.`);
+                    suggestions.push(`🤲 Make dua: "Allahumma barik lana fi waqtina" - O Allah, bless our time.`);
+                } else if (screenTime >= 0) {
+                    suggestions.push(`✅ ${screenTime}h screen time — under control. Keep up the good habit!`);
+                    suggestions.push(`🕌 May Allah protect our time and make it productive.`);
+                }
+            }
+
+            // Mood-based advice
+            if (mood === 'happy') {
+                suggestions.push('😊 Alhamdulillah! Use this positive energy for productive work.');
+            } else if (mood === 'sad') {
+                suggestions.push('😢 Feeling sad? The Prophet ﷺ said: "The heart gets rusty like iron gets rusty." Remove rust with Dhikr and Quran.');
+                suggestions.push('🤲 Make dua: "Allahumma inni a\'udhu bika minal-hammi wal-hazan" (O Allah, I seek refuge from anxiety and sorrow).');
+            } else if (mood === 'angry') {
+                suggestions.push('😡 Anger is from Shaytan. The Prophet ﷺ said: "If one of you gets angry while standing, let him sit down."');
+                suggestions.push('🕌 Perform Wudu, recite "A\'udhu billahi minash-shaytanir-rajim", and take deep breaths.');
+            }
+
+            if (suggestions.length === 0) {
+                suggestions.push('📊 Log screen time and mood for personalized advice.');
+            }
+
+            box.textContent = suggestions.join(' ');
+            renderFocusMood(screenTime, mood);
+        }
+
+        function renderFocusMood(screenTime, mood) {
+            const lamp = document.getElementById('focus-lamp');
+            const text = document.getElementById('focus-text');
+
+            if (isNaN(screenTime) || screenTime === '') {
+                lamp.className = 'lamp off';
+                text.textContent = 'Log your screen time and mood for personalized advice.';
+                return;
+            }
+
+            // Color based on mood
+            let moodColor = 'off';
+            let moodText = '';
+            if (mood === 'happy') { moodColor = 'green';
+                moodText = '😊 Happy'; } else if (mood === 'sad') { moodColor = 'blue';
+                moodText = '😢 Sad'; } else if (mood === 'angry') { moodColor = 'red';
+                moodText = '😡 Angry'; } else { moodColor = 'yellow';
+                moodText = '😐 Neutral'; }
+
+            // Screen time assessment
+            let screenAdvice = '';
+            if (screenTime > 6) {
+                screenAdvice = `⚠️ ${screenTime}h screen time - high! Try reducing by 30 min daily.`;
+                if (mood === 'happy') {
+                    screenAdvice += ' 🎯 Channel happiness into offline activities.';
+                } else if (mood === 'sad') {
+                    screenAdvice += ' 💔 Screen time may be worsening sadness. Try offline connection.';
+                } else if (mood === 'angry') {
+                    screenAdvice += ' 🔥 High screen time can increase anger. Take breaks regularly.';
+                }
+            } else if (screenTime > 3) {
+                screenAdvice = `⚡ ${screenTime}h - moderate. Try a digital sunset 1 hour before bed.`;
+            } else {
+                screenAdvice = `✅ ${screenTime}h - good control! Keep it up.`;
+            }
+
+            lamp.className = 'lamp ' + moodColor;
+            text.textContent = `${moodText} · ${screenAdvice}`;
+        }
+
+        // ============================================================
+        // RESOURCES (with file upload)
+        // ============================================================
+        function renderResources() {
+            const list = document.getElementById('resource-list');
+            list.innerHTML = '';
+            if (resources.length === 0) {
+                list.innerHTML = '<li class="empty">Add study resources by subject & topic.</li>';
+            }
+            resources.forEach((r, i) => {
+                const li = document.createElement('li');
+                li.className = 'row';
+                const fileIcon = r.fileType ? getFileIcon(r.fileType) : '📄';
+                li.innerHTML =
+                    `<span class="resource-item">
+                        <span class="file-type">${fileIcon}</span>
+                        <span class="resource-tag">${escapeHtml(r.subject)}</span>
+                        ${escapeHtml(r.topic)}
+                        ${r.link ? `<a href="${escapeHtml(r.link)}" target="_blank">🔗</a>` : ''}
+                        ${r.fileName ? `<span style="color:var(--text-dimmer);font-size:9px;">📎 ${escapeHtml(r.fileName)}</span>` : ''}
+                    </span>` +
+                    `<button class="row-x" data-i="${i}">✕</button>`;
+                list.appendChild(li);
+            });
+            document.getElementById('resource-count').textContent = resources.length + ' items';
+        }
+
+        function getFileIcon(fileType) {
+            const types = {
+                'pdf': '📕',
+                'doc': '📘',
+                'docx': '📘',
+                'txt': '📄',
+                'jpg': '🖼️',
+                'jpeg': '🖼️',
+                'png': '🖼️',
+                'gif': '🖼️',
+                'mp4': '🎬',
+                'webm': '🎬',
+                'ppt': '📊',
+                'pptx': '📊',
+                'xls': '📊',
+                'xlsx': '📊'
+            };
+            return types[fileType] || '📄';
+        }
+
+        document.getElementById('resource-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const subject = document.getElementById('resource-subject').value.trim();
+            const topic = document.getElementById('resource-topic').value.trim();
+            const link = document.getElementById('resource-link').value.trim();
+            const fileInput = document.getElementById('resource-file');
+
+            if (!subject || !topic) { alert('Enter subject and topic.'); return; }
+
+            // Handle file upload
+            if (fileInput.files.length > 0) {
+                for (let file of fileInput.files) {
+                    try {
+                        const storageRef = storage.ref(`users/${currentUser.uid}/resources/${Date.now()}_${file.name}`);
+                        const snapshot = await storageRef.put(file);
+                        const downloadURL = await snapshot.ref.getDownloadURL();
+
+                        const fileType = file.name.split('.').pop().toLowerCase();
+                        resources.push({
+                            subject,
+                            topic,
+                            link: downloadURL,
+                            fileName: file.name,
+                            fileType: fileType,
+                            fileSize: file.size
+                        });
+                    } catch (error) {
+                        console.error('Upload error:', error);
+                        alert('Error uploading file: ' + error.message);
+                    }
+                }
+            } else if (link) {
+                resources.push({ subject, topic, link, fileName: null, fileType: null });
+            } else {
+                alert('Please add a URL or upload a file.');
+                return;
+            }
+
+            document.getElementById('resource-subject').value = '';
+            document.getElementById('resource-topic').value = '';
+            document.getElementById('resource-link').value = '';
+            document.getElementById('resource-file').value = '';
+            renderAll();
+        });
+
+        document.getElementById('resource-list').addEventListener('click', function(e) {
+            const i = e.target.getAttribute('data-i');
+            if (i === null) return;
+            resources.splice(parseInt(i, 10), 1);
+            renderAll();
+        });
+
+        // ============================================================
+        // WATER TRACKER
+        // ============================================================
+        const RING_CIRCUMFERENCE = 150.8;
+
+        function renderWater() {
+            const frac = Math.min(1, water / 8);
+            const offset = RING_CIRCUMFERENCE * (1 - frac);
+            const ring = document.getElementById('water-ring');
+            if (ring) ring.setAttribute('stroke-dashoffset', offset.toFixed(1));
+            const num = document.getElementById('water-num');
+            if (num) num.textContent = water + '/8';
+            const count = document.getElementById('water-count');
+            if (count) count.textContent = water + ' of 8 glasses';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const upBtn = document.getElementById('water-up');
+            const downBtn = document.getElementById('water-down');
+            if (upBtn) {
+                upBtn.addEventListener('click', function() {
+                    if (water < 8) { water++;
+                        renderAll(); }
+                });
+            }
+            if (downBtn) {
+                downBtn.addEventListener('click', function() {
+                    water = Math.max(0, water - 1);
+                    renderAll();
+                });
+            }
+        });
+
+        // ============================================================
         // UTILITY
         // ============================================================
         function escapeHtml(s) {
@@ -1797,6 +2012,41 @@
             d.textContent = s;
             return d.innerHTML;
         }
+
+        // ============================================================
+        // BIND INPUT CHANGES
+        // ============================================================
+        document.getElementById('sleep-input').addEventListener('change', function() {
+            healthData.sleep = this.value;
+            renderHealthSuggestions();
+            autoSave();
+        });
+        document.getElementById('mood-input').addEventListener('change', function() {
+            healthData.mood = this.value;
+            renderHealthSuggestions();
+            autoSave();
+        });
+        document.getElementById('energy-input').addEventListener('change', function() {
+            healthData.energy = this.value;
+            renderHealthSuggestions();
+            autoSave();
+        });
+        document.getElementById('stress-input').addEventListener('change', function() {
+            healthData.stress = this.value;
+            renderHealthSuggestions();
+            autoSave();
+        });
+
+        document.getElementById('screen-time').addEventListener('change', function() {
+            focusData.screenTime = this.value;
+            renderFocusSuggestions();
+            autoSave();
+        });
+        document.getElementById('mood-selector').addEventListener('change', function() {
+            focusData.mood = this.value;
+            renderFocusSuggestions();
+            autoSave();
+        });
 
         // ============================================================
         // INIT - Add water ring if missing
@@ -1831,70 +2081,16 @@
                 } else {
                     vitPanel.appendChild(newGauge);
                 }
-                document.getElementById('water-up').addEventListener('click', function () {
-                    if (water < 8) {
-                        water++;
-                        renderAll();
-                    }
+                document.getElementById('water-up').addEventListener('click', function() {
+                    if (water < 8) { water++;
+                        renderAll(); }
                 });
-                document.getElementById('water-down').addEventListener('click', function () {
+                document.getElementById('water-down').addEventListener('click', function() {
                     water = Math.max(0, water - 1);
                     renderAll();
                 });
             }
         })();
-
-        // Bind health inputs to auto-save
-        const sleepInput = document.getElementById('sleep-input');
-        if (sleepInput) {
-            sleepInput.addEventListener('change', function () {
-                healthData.sleep = this.value;
-                renderHealthSuggestions();
-                autoSave();
-            });
-        }
-        const moodInput = document.getElementById('mood-input');
-        if (moodInput) {
-            moodInput.addEventListener('change', function () {
-                healthData.mood = this.value;
-                renderHealthSuggestions();
-                autoSave();
-            });
-        }
-        const energyInput = document.getElementById('energy-input');
-        if (energyInput) {
-            energyInput.addEventListener('change', function () {
-                healthData.energy = this.value;
-                renderHealthSuggestions();
-                autoSave();
-            });
-        }
-        const stressInput = document.getElementById('stress-input');
-        if (stressInput) {
-            stressInput.addEventListener('change', function () {
-                healthData.stress = this.value;
-                renderHealthSuggestions();
-                autoSave();
-            });
-        }
-
-        const wastedInput = document.getElementById('time-wasted');
-        if (wastedInput) {
-            wastedInput.addEventListener('change', function () {
-                focusData.wasted = this.value;
-                renderWaste(parseFloat(this.value));
-                renderFocusSuggestions();
-                autoSave();
-            });
-        }
-        const sourceInput = document.getElementById('distraction-source');
-        if (sourceInput) {
-            sourceInput.addEventListener('change', function () {
-                focusData.source = this.value;
-                renderFocusSuggestions();
-                autoSave();
-            });
-        }
 
         // ============================================================
         // START
@@ -1903,7 +2099,9 @@
         console.log('📊 Firebase Project: student-dashboard-49');
         console.log('🔐 Google Authentication Enabled');
         console.log('💾 Firestore Database Connected');
+        console.log('📚 60 Motivational Quotes Ready');
+        console.log('🕌 Prayer Times with City Selection');
+        console.log('🤖 AI Agents: Goal & Health');
     </script>
 </body>
-
 </html>

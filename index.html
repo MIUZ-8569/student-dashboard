@@ -50,9 +50,7 @@
             --brass-dim: #8a6f3f;
         }
 
-        [data-theme="auto"] {
-            /* Uses system preference via media query */
-        }
+        [data-theme="auto"] {}
 
         @media (prefers-color-scheme: light) {
             [data-theme="auto"] {
@@ -1331,16 +1329,15 @@
 
     <script>
         // ============================================================
-        // FIREBASE CONFIG
+        // FIREBASE CONFIG - REPLACE WITH YOUR OWN
         // ============================================================
         const firebaseConfig = {
-            apiKey: "AIzaSyAsCUJz9EIpBLNQjSUO-07u3mZhN_kwmro",
-            authDomain: "student-dashboard-49.firebaseapp.com",
-            projectId: "student-dashboard-49",
-            storageBucket: "student-dashboard-49.firebasestorage.app",
-            messagingSenderId: "776917137025",
-            appId: "1:776917137025:web:f54b37ab7ebe883c0abf80",
-            measurementId: "G-KV962NEP6P"
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
         };
 
         // ============================================================
@@ -1663,7 +1660,6 @@
         let lastQuoteIndex = -1;
         let quoteCache = [];
 
-        // Preload quotes for fast display
         function preloadQuotes() {
             quoteCache = [...studyQuotes];
             showRandomQuote();
@@ -1964,7 +1960,6 @@
         document.getElementById('custom-location').addEventListener('change', function() {
             customLocation = this.value.trim();
             if (customLocation) {
-                // Try to get coordinates for custom location using geocoding
                 getCoordinatesFromLocation(customLocation);
             }
             autoSave();
@@ -1975,7 +1970,6 @@
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
                         const { latitude, longitude } = position.coords;
-                        // Reverse geocode to get city name
                         fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`)
                             .then(res => res.json())
                             .then(data => {
@@ -2077,7 +2071,6 @@
 
             document.getElementById('next-prayer').textContent = nextPrayer;
 
-            // Setup Jamaat editors
             document.querySelectorAll('.jamaat-input').forEach(input => {
                 input.addEventListener('change', function() {
                     const name = this.dataset.prayer;
@@ -2122,10 +2115,8 @@
         function updateRamadanInfo() {
             const now = new Date();
             const year = now.getFullYear();
-            // Approximate Ramadan dates (this is simplified - actual dates depend on moon sighting)
-            // For demonstration, using fixed dates
-            const ramadanStart = new Date(year, 2, 1); // March 1 (approximate)
-            const ramadanEnd = new Date(year, 2, 30); // March 30 (approximate)
+            const ramadanStart = new Date(year, 2, 1);
+            const ramadanEnd = new Date(year, 2, 30);
 
             const isRamadan = now >= ramadanStart && now <= ramadanEnd;
 
@@ -2134,43 +2125,35 @@
 
             if (isRamadan) {
                 const daysInRamadan = Math.ceil((ramadanEnd - now) / (1000 * 60 * 60 * 24));
-                container.innerHTML = `
-                    🌙 Ramadan Mubarak! ${daysInRamadan > 0 ? `${daysInRamadan} days remaining` : 'Final days of Ramadan!'}
-                    \n📖 "The month of Ramadan [is that] in which was revealed the Qur'an, a guidance for the people." (Quran 2:185)
-                    \n🕌 Benefits: Forgiveness, multiplied rewards, spiritual growth, self-discipline.
-                    \n🌅 Sehri ends: ${calculateSehriTime(now)}\n🌇 Iftar time: ${calculateIftarTime(now)}
-                `;
+                container.innerHTML =
+                    `🌙 Ramadan Mubarak! ${daysInRamadan > 0 ? `${daysInRamadan} days remaining` : 'Final days of Ramadan!'}\n📖 "The month of Ramadan [is that] in which was revealed the Qur'an, a guidance for the people." (Quran 2:185)\n🕌 Benefits: Forgiveness, multiplied rewards, spiritual growth, self-discipline.\n🌅 Sehri ends: ${calculateSehriTime(now)}\n🌇 Iftar time: ${calculateIftarTime(now)}`;
             } else {
                 const daysUntilRamadan = Math.ceil((ramadanStart - now) / (1000 * 60 * 60 * 24));
                 if (daysUntilRamadan > 0 && daysUntilRamadan < 365) {
                     container.innerHTML =
-                        `📅 ${daysUntilRamadan} days until Ramadan ${year}. Prepare spiritually and physically.`;
+                    `📅 ${daysUntilRamadan} days until Ramadan ${year}. Prepare spiritually and physically.`;
                 } else {
                     container.innerHTML = `📅 Ramadan ${year} has passed. May Allah accept our deeds.`;
                 }
             }
 
-            // Ashura info
-            const ashuraDate = new Date(year, 6, 28); // July 28 (approximate)
+            const ashuraDate = new Date(year, 6, 28);
             const isAshura = now.getMonth() === ashuraDate.getMonth() && now.getDate() === ashuraDate.getDate();
             if (isAshura) {
                 container.innerHTML +=
                     `\n\n🕌 Today is Ashura! Fasting on this day expiates sins of the previous year.\n📖 "Fasting on the day of Ashura, I hope Allah will expiate the sins of the previous year." (Sahih Muslim)`;
             }
 
-            // Forbidden fasting days
             forbiddenContainer.innerHTML = `⚠️ Days when fasting is prohibited:\n• ${forbiddenFastingDays.join('\n• ')}`;
         }
 
         function calculateSehriTime(now) {
-            // Simplified - 1.5 hours before sunrise (approx)
             const sehri = new Date(now);
             sehri.setHours(4, 30, 0);
             return format12h(sehri);
         }
 
         function calculateIftarTime(now) {
-            // Simplified - sunset time (approx)
             const iftar = new Date(now);
             iftar.setHours(18, 15, 0);
             return format12h(iftar);
@@ -2200,7 +2183,7 @@
         }
 
         // ============================================================
-        // HEALTH SUGGESTIONS (Structured AI Response)
+        // HEALTH SUGGESTIONS
         // ============================================================
         function renderHealthSuggestions() {
             const box = document.getElementById('health-suggestion-box');
@@ -2212,11 +2195,9 @@
             let response = '';
             const isDetailed = healthMode === 'detailed';
 
-            // Header
             response = `🕌 ${isDetailed ? 'Assalamu Alaikum! Comprehensive Wellness Report' : 'Wellness Summary'}\n`;
             response += `${'─'.repeat(40)}\n`;
 
-            // Sleep analysis
             if (!isNaN(sleep)) {
                 response += `💤 SLEEP: ${sleep}h\n`;
                 if (sleep < 6) {
@@ -2232,12 +2213,11 @@
                 response += `\n`;
             }
 
-            // Energy analysis
             if (!isNaN(energy)) {
                 response += `⚡ ENERGY: ${energy}/10\n`;
                 if (energy < 4) {
                     response +=
-                        `⚠️ Low energy. May affect worship and studies.\n📌 Solutions: Nutritious food, hydration, short walks\n📌 Du'a: "Allahumma inni a'udhu bika minal-'ajzi wal-kasli" (O Allah, I seek refuge from inability and laziness)\n`;
+                        `⚠️ Low energy. May affect worship and studies.\n📌 Solutions: Nutritious food, hydration, short walks\n📌 Du'a: "Allahumma inni a'udhu bika minal-'ajzi wal-kasli"\n`;
                 } else if (energy > 8) {
                     response +=
                         `✅ High energy! Channel into productive work and worship.\n📌 Use for: Difficult tasks, memorization, physical activity\n📌 Remember to thank Allah for this blessing.\n`;
@@ -2245,12 +2225,11 @@
                 response += `\n`;
             }
 
-            // Stress analysis
             if (!isNaN(stress)) {
                 response += `😰 STRESS: ${stress}/10\n`;
                 if (stress > 7) {
                     response +=
-                        `⚠️ High stress detected.\n📌 Islamic solutions: Dhikr, Wudu, 2 rakah prayer\n📌 Du'a: "Hasbunallahu wa ni'mal wakeel" (Allah is sufficient for us)\n📌 Benefits: Peace of mind, spiritual connection\n📌 Detriments: Health issues if unmanaged\n`;
+                        `⚠️ High stress detected.\n📌 Islamic solutions: Dhikr, Wudu, 2 rakah prayer\n📌 Du'a: "Hasbunallahu wa ni'mal wakeel"\n📌 Benefits: Peace of mind, spiritual connection\n📌 Detriments: Health issues if unmanaged\n`;
                 } else if (stress < 4) {
                     response +=
                         `✅ Stress under control. A blessing from Allah.\n📌 Use this peace for deep work and strengthening your relationship with Allah.\n`;
@@ -2258,7 +2237,6 @@
                 response += `\n`;
             }
 
-            // Mood analysis
             if (mood === 'Anxious') {
                 response +=
                     `🧘 ANXIETY DETECTED\n📌 Steps: 1) Perform Wudu 2) Pray 2 rakah 3) Dhikr: "La hawla wa la quwwata illa billah"\n📌 Hadith: "If you trust in Allah as He should be trusted, He will provide for you as He provides for birds." (Tirmidhi)\n`;
@@ -2277,7 +2255,6 @@
             box.textContent = response;
         }
 
-        // Health mode toggle
         document.getElementById('health-mode-brief').addEventListener('click', function() {
             healthMode = 'brief';
             document.querySelectorAll('#health-mode-brief, #health-mode-detailed').forEach(b =>
@@ -2294,7 +2271,7 @@
         });
 
         // ============================================================
-        // FOCUS GUARDRAIL (Updated mood mapping)
+        // FOCUS GUARDRAIL
         // ============================================================
         function renderFocusSuggestions() {
             const box = document.getElementById('focus-suggestion-box');
@@ -2303,7 +2280,6 @@
             let response = '';
 
             if (!isNaN(screenTime) && screenTime >= 0 && screenTime <= 24) {
-                // Mood-based assessment
                 let moodEmoji = '';
                 let moodAdvice = '';
                 let color = '';
@@ -2323,10 +2299,9 @@
                     color = 'red';
                 }
 
-                // Screen time assessment
                 let screenAdvice = '';
                 if (screenTime <= 2) {
-                    screenAdvice = `✅ ${screenTime}h - Excellent! Screen time under control. Keep building this good habit.`;
+                    screenAdvice = `✅ ${screenTime}h - Excellent! Screen time under control.`;
                 } else if (screenTime <= 4) {
                     screenAdvice =
                         `⚡ ${screenTime}h - Moderate screen time. Try the 20-20-20 rule: every 20 min, look 20 ft away for 20 seconds.`;
@@ -2338,7 +2313,6 @@
                 response =
                     `${moodEmoji} MOOD: ${mood.charAt(0).toUpperCase() + mood.slice(1)}\n📱 SCREEN TIME: ${screenTime}h\n${screenAdvice}\n\n${moodAdvice}\n\n🕌 May Allah bless our time and make it productive.`;
 
-                // Update lamp
                 const lamp = document.getElementById('focus-lamp');
                 lamp.className = 'lamp ' + color;
                 document.getElementById('focus-text').textContent =
@@ -2353,12 +2327,10 @@
             box.textContent = response;
         }
 
-        function renderFocusMood(screenTime, mood) {
-            // This is now handled in renderFocusSuggestions
-        }
+        function renderFocusMood(screenTime, mood) {}
 
         // ============================================================
-        // RESOURCES (Fixed)
+        // RESOURCES
         // ============================================================
         function renderResources() {
             const list = document.getElementById('resource-list');
@@ -2369,7 +2341,6 @@
                 return;
             }
 
-            // Group by subject
             const grouped = {};
             resources.forEach(r => {
                 if (!grouped[r.subject]) grouped[r.subject] = [];
@@ -2557,19 +2528,15 @@
         // ============================================================
         // INIT
         // ============================================================
-        // Preload quotes for fast display
         preloadQuotes();
-
-        // Start prayer times
         setTimeout(updatePrayerTimes, 500);
 
         console.log('✅ Student Ops Dashboard Loaded!');
-        console.log('📊 Firebase Project: student-dashboard-49');
+        console.log('📊 Firebase Connected');
         console.log('🔐 Google Authentication Enabled');
-        console.log('💾 Firestore Database Connected');
-        console.log('📚 60 Motivational Quotes Ready (fast loading)');
+        console.log('📚 60 Motivational Quotes Ready');
         console.log('🕌 Prayer Times with Location Support');
-        console.log('🤖 AI Agents: Goal & Health (Structured Responses)');
+        console.log('🤖 AI Agents: Goal & Health');
         console.log('🎨 Theme Support: Dark, Light, Auto');
     </script>
 </body>
